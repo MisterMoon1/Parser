@@ -1,0 +1,24 @@
+import requests
+from bs4 import BeautifulSoup as bs
+
+name_list = []
+phone_list = []
+
+for i in range(7,25):
+    URL_TEMPLATE = f'https://mycompany.su/RU/ekaterinburg/category/kafe/page/{i}'
+    r = requests.get(URL_TEMPLATE)
+
+    soup = bs(r.text, "html.parser")
+    rest_phones = soup.find_all('div', class_='tel')
+
+    for name in rest_phones:
+        x = name.a['href']
+        phone_list.append(x.replace('tel:+7', ''))
+        y = name.a['title']
+        name_list.append(y.replace('Позвонить в ', ''))
+
+for name_1 in name_list:
+    print(name_1)
+
+for phone in phone_list:
+    print(phone)
